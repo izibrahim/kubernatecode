@@ -1,0 +1,19 @@
+kubectl get pods
+kubectl get pods -o wide # get the NODE where the POD is running 
+kubectl describe pod <PODNAME> # the pod details 
+kubectl describe pod <PODNAME> | grep Image:  # the pod image
+kubectl describe pod <PODNAME> | grep State:   # the pod state
+kubectl describe pod <PODNAME> | grep Warning   # the pod Warning
+kubectl run redis --image=redis dry-run=client -o yaml > pod.yml # create the Pod definition file yml
+kubectl apply -f pod.yml # create the pod
+kubectl eidt pod redis # eid the definition file
+
+key point:
+=========
+
+- If you are given a pod definition file, edit that file and use it to create a new pod.
+- If you are not given a pod definition file, you may extract the definition to a file using the below command:
+- kubectl get pod <pod-name> -o yaml > pod-definition.yaml
+
+Then edit the file to make the necessary changes, delete and re-create the pod.
+Use the kubectl edit pod <pod-name> command to edit pod properties.
