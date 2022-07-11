@@ -17,3 +17,11 @@ key point:
 
 Then edit the file to make the necessary changes, delete and re-create the pod.
 Use the kubectl edit pod <pod-name> command to edit pod properties.
+
+Replicaset:
+==========
+kubectl create -f replicaset-definition.yml 
+kubectl get replicaset
+kubectl delete replicaset myapp-set
+kubectl replace -f replicaset-definition.yml  # when change the scale 
+kubectl scale -replicas=6 -f myapp-set
