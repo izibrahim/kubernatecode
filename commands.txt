@@ -60,3 +60,10 @@ replicaset.apps/new-replica-set scaled
 controlplane ~ ➜  kubectl  get replicasets.apps 
 NAME              DESIRED   CURRENT   READY   AGE
 new-replica-set   2         2         2       23m
+
+
+kubectl run redis  --image=redis:alpine --labels=tier=db
+kubectl create deployment webapp --image=kodekloud/webapp-color 
+kubectl scale deployment webapp --replicas=3
+kubectl run custom-nginx --image=nginx --port 8080
+kubectl  create namespace dev-ns
