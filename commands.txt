@@ -6,7 +6,7 @@ kubectl describe pod <PODNAME> | grep State:   # the pod state
 kubectl describe pod <PODNAME> | grep Warning   # the pod Warning
 kubectl run redis --image=redis dry-run=client -o yaml > pod.yml # create the Pod definition file yml
 kubectl apply -f pod.yml # create the pod
-kubectl eidt pod redis # eid the definition file
+kubectl edit pod redis # eid the definition file
 
 key point:
 =========
@@ -25,3 +25,38 @@ kubectl get replicaset
 kubectl delete replicaset myapp-set
 kubectl replace -f replicaset-definition.yml  # when change the scale 
 kubectl scale -replicas=6 -f myapp-set
+kubectl describe replicasets.apps new-replica-set | grep Image:
+
+Creating replicaset
+==================
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replicaset-1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+
+run the command 
+kubectl apply -f replicaset-definition-1.yaml
+kubectl delete replicasets.apps replicaset-1 
+To edit the replicaset
+kubectl edit replicasets.apps <NAME>
+esc press i once save use :wq
+
+controlplane ~ ➜  kubectl scale replicaset --replicas=2 new-replica-set 
+replicaset.apps/new-replica-set scaled
+
+controlplane ~ ➜  kubectl  get replicasets.apps 
+NAME              DESIRED   CURRENT   READY   AGE
+new-replica-set   2         2         2       23m
