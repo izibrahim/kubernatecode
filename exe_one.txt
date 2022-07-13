@@ -1,0 +1,30 @@
+kubectl get pod
+alias k = "kubectl get pod"
+kubectl get pod
+alias k="kubectl get pod"
+k
+alias a="kubectl get all"
+a
+kubectl  run nginx --image=nginx
+clear
+k
+k
+alias d="kubectl describe pod"
+d newpods-gnvmg
+d newpods-gnvmg |  grep Image:
+k -o wide
+k webapp
+d webapp | grep Image:
+d webapp | grep Satue:
+d webapp | grep Sate:
+d webapp 
+k
+kubectl delete pod webapp 
+kubectl run redis --image=redis123 
+kubectl edit redis
+kubectl edit pod redis
+kubectl apply -f redis
+kubectl apply -f pod redis
+kubectl apply -f redis
+kubectl get pod
+history 

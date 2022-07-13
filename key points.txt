@@ -1,0 +1,4 @@
+cerate the 
+alias k ="kubectl get pod"
+alias r ="kubectl run"
+alias d ="kubectl describe pod"
