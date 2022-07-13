@@ -1,0 +1,76 @@
+kubectl get nodes 
+kubectl describe  nodes node01 | grep -i taints
+kubectl describe  nodes node01 | grep Taints
+root@controlplane ~ ➜  kubectl taint node  node01 spray=mortein:NoSchedule
+node/node01 tainted
+
+root@controlplane ~ ➜  kubectl describe  nodes node01 | grep Taints
+Taints:             spray=mortein:NoSchedule
+
+root@controlplane ~ ➜  
+
+root@controlplane ~ ➜  kubectl run mosquito --image=ngnix 
+pod/mosquito created
+
+root@controlplane ~ ➜  kubectl get pod
+NAME       READY   STATUS    RESTARTS   AGE
+mosquito   0/1     Pending   0          11s
+
+root@controlplane ~ ➜  kubectl  get  pod
+NAME       READY   STATUS    RESTARTS   AGE
+mosquito   0/1     Pending   0          34s
+
+root@controlplane ~ ➜  
+
+root@controlplane ~ ➜  
+
+root@controlplane ~ ➜  kubectl  get  pod
+NAME       READY   STATUS    RESTARTS   AGE
+mosquito   0/1     Pending   0          37s
+
+root@controlplane ~ ➜  kubectl  delete pod mosquito 
+pod "mosquito" deleted
+
+root@controlplane ~ ➜  kubectl run mosquito --image=nginx
+pod/mosquito created
+
+Pod is on pending status
+
+root@controlplane ~ ➜  kubectl describe pod | grep Warning
+  Warning  FailedScheduling  72s   default-scheduler  0/2 nodes are available: 1 node(s) had taint {node-role.kubernetes.io/master: }, that the pod didn't tolerate, 1 node(s) had taint {spray: mortein}, that the pod didn't tolerate.
+
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bee
+spec:
+  containers:
+  - image: nginx
+    name: bee
+  tolerations:
+  - key: spray
+    value: mortein
+    effect: NoSchedule
+    operator: Equal
+
+
+root@controlplane ~ ✦ ➜  kubectl  get pod
+NAME   READY   STATUS    RESTARTS   AGE
+bee    1/1     Running   0          49s
+
+root@controlplane ~ ✦ ➜  kubectl  get pod -o
+Error: flag needs an argument: 'o' in -o
+See 'kubectl get --help' for usage.
+
+root@controlplane ~ ✦ ✖ kubectl  get pod -o wide 
+NAME   READY   STATUS    RESTARTS   AGE   IP           NODE     NOMINATED NODE   READINESS GATES
+bee    1/1     Running   0          54s   10.244.1.2   node01   <none>           <none>
+
+root@controlplane ~ ✦ ➜  
+
+root@controlplane ~ ✦ ➜  
+
+oot@controlplane ~ ✦ ✖ kubectl describe node controlplane | grep Taints
+Taints:             node-role.kubernetes.io/master:NoSchedule
