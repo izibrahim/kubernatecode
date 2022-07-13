@@ -1,0 +1,13 @@
+kubectl apply -f pod-definition.yml 
+kubectl  get configmaps 
+kubectl  get configmaps 
+kubectl create configmap webapp-config-map --from-literal= APP_COLOR=darkblue
+kubectl  get  configmaps 
+kubectl get pod webapp-color -o yaml  > pod.yaml ---- Create the pod definition file
+kubectl delete pod webapp-color 
+vi pod.yaml 
+kubectl explain pod
+kubectl explain pod --recursive | grep envFrom
+kubectl explain pod --recursive | grep envFrom -A3
+
+kubectl  apply -f pod.yaml 
