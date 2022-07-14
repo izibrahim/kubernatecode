@@ -1,0 +1,138 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blue
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: nginx
+  template:
+    metadata:
+      labels:
+        run: nginx
+    spec:
+      containers:
+      - image: nginx
+        imagePullPolicy: Always
+        name: nginx
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-role.kubernetes.io/master
+                operator: Exists
+			
+			
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blue
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: nginx
+  template:
+    metadata:
+      labels:
+        run: nginx
+    spec:
+      containers:
+      - image: nginx
+        imagePullPolicy: Always
+        name: nginx
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: color
+                operator: In
+                values:
+                - blue
+				
+				
+kubectl get lab
+    2  kube get node
+    3  kubectl get nodes 
+    4  kubectl describe nodes | grep Labels
+    5  kubectl describe nodes 
+    6  kubectl describe nodes | grep labels"
+    7  kubectl describe nodes | grep labels:
+    8  kubectl describe nodes | grep Labels:
+    9  kubectl describe nodes nodes01
+   10  kubectl describe nodes
+   11  kubectl get nodes 
+   12  kubectl describe  nodes node01 | grep Label:
+   13  kubectl describe  nodes node01 | grep Labels:
+   14  kubectl  get  nodes node01 --show-labels 
+   15  clear
+   16  kubectl  get  nodes node01 --show-labels 
+   17  kubectl  get  nodes node01 --show-labels --help
+   18  clear
+   19  kubectl  get  nodes node01 --show-labels
+   20  kubectl label nodes node01 color = blue
+   21  kubectl label nodes node01 color=blue
+   22  kubectl  get  nodes node01 --show-labels
+   23  clear
+   24  kubectl  get  nodes node01 --show-labels
+   25  kubectl label nodes node01 color=blue
+   26  kubectl  get  nodes node01 --show-labels
+   27  kubectl create deployment blue --image=nginx 
+   28  kubectl scale deployment blue --replicas=3
+   29  kubectl get all
+   30  kubectl  get  pod -o  wide 
+   31  kubectl  explain pod --recursive | less
+   32  kubectl get pod 
+   33  kubectl get pod blue-77f46cd5b6-d6hqx -o yaml | pod-definition.yml
+   34  kubectl get pod blue-77f46cd5b6-d6hqx -o yaml > pod-definition.yml
+   35  kubectl delete deployments 
+   36  kubectl delete deployments blue 
+   37  kubectl get got
+   38  kubectl get pod
+   39  kubectl edit pod-definition.yml
+   40  kubectl edit --help
+   41  kubectl edit -f pod-definition.yml 
+   42  clear
+   43  history 
+   44  kubectl create deployment blue --image=nginx
+   45  kubectl scale deployment blue --replicas=3
+   46  kubectl  get  deployments.apps blue -o yaml > dep.yaml
+   47  kubectl  delete deployments.apps blue 
+   48  kubectl  edit -f dep.yaml 
+   49  kubectl create deployment blue --image=nginx
+   50* kubectl 
+   51  kubectl  get  deployments.apps blue -o yaml > blue.yaml
+   52  vi blue.yaml 
+   53  kubectl get pod
+   54  kubectl get pod -o wide 
+   55  more blue.yaml 
+   56  vi blue.yaml 
+   57  history 
+   58  kubectl delete deployments blue
+   59  kubectl apply -f blue.yaml 
+   60  vi blue.yaml 
+   61  kubectl apply -f blue.yaml 
+   62  vi blue.yaml 
+   63  kubectl apply -f blue.yaml 
+   64  kubectl apply -f blue.yaml --validate=false
+   65  kubectl apply -f blue.yaml 
+   66  vi blue.yaml 
+   67  kubectl apply -f blue.yaml 
+   68  vi blue.yaml 
+   69  kubectl apply -f blue.yaml 
+   70  vi blue.yaml 
+   71* 
+   72  rm pod-definition.yml 
+   73  vi pod-definition.yml
+   74  kubectl apply -f pod-definition.yml 
+   75  kubectl  get  pod -o wide 
+   76  vi pod-definition.yml 
+   77  vi pod2.yml
+   78  kubectl apply -f pod2.yml 
+   79  vi pod2.yml
+   80  vi pod-definition.yml 
+   81  history 
