@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replicaset-1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+
+The values for labels on lines 9 and 13 should match. label must be match
+
+ kubectl get pod
+    2  kubectl get pod --namespace=default 
+    3  kubectl  get  replicasets.apps 
+    4  kubectl  get  replicasets.apps --namespace=default 
+    5  kubectl describe replicasets.apps | grep Warning
+    6  kubectl describe replicasets.apps | grep Image:
+    7  kubectl get  pod -o wide
+    8  kubectl describe replicasets.apps | grep Warning
+    9  kubectl describe replicasets.apps 
+   10  kubectl get  pod -o wide
+   11  kubectl get  pod -o wide
+   12  kubectl get  pod -o wide
+   13  kubectl get  pod -o wide
+   14  kubectl get  pod -o wide
+   15  kubect get replicaset-definition-
+   16  kubectl get replicasets.apps 
+   17  kubectl get pod
+   18  kubectl delete pod new-replica-set-47qb7 new-replica-set-
+   19  kubectl delete pod new-replica-set-47qb7
+   20  kubectl get pod
+   21  kubectl get pod
+   22  clear
+   23  ls
+   24  more replicaset-definition-1.yaml 
+   25  kubectl apply -f replicaset-definition-1.yaml 
+   26  vi replicaset-definition-1.yaml 
+   27  kubectl apply -f replicaset-definition-1.yaml 
+   28  more replicaset-definition-1.yaml 
+   29  clear
+   30  ls
+   31  more replicaset-definition-2.yaml 
+   32  kubectl apply -f replicaset-definition-2.yaml 
+   33  vi replicaset-definition-1.yaml 
+   34  more replicaset-definition-2.yaml 
+   35  /root/
+   36  cd /root/
+   37  ls
+   38  more replicaset-definition-
+   39  more replicaset-definition-1
+   40  more replicaset-definition-1.yaml 
+   41  more replicaset-definition-2.yaml 
+   42  vi replicaset-definition-1.yaml 
+   43  more replicaset-definition-2.yaml 
+   44  vi replicaset-definition-2.yaml 
+   45  kubectl apply -f replicaset-definition-2.yaml 
+   46  more replicaset-definition-2.yaml 
+   47  kubectl  get  replicasets.apps 
+   48  kubectl delete replicasets.apps replicaset-1 
+   49  kubectl delete replicasets.apps replicaset-2
+   50  history 
