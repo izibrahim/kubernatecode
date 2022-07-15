@@ -1,0 +1,22 @@
+Create POD using run:
+=====================
+kubectl  run  redis --image=redis --labels=front-end
+
+namespace:
+================
+Get all the namespaces 
+=======================
+kubectl get namespaces 
+kubectl get namespaces --no-headers | wc -l
+checking Pod in specific namespace:
+====================================
+kubectl get  pod --namespace=research
+Creat Pod in specific namespaces:
+==================================
+kubectl  run  redis --image=redis --namespace=finance
+kubectl get pod --all-namespaces  | grep blue
+
+Checking services in namespaces:
+===============================
+kubectl get service --namespace=marketing
+kubectl get service --namespace=dev
