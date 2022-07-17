@@ -4,19 +4,33 @@ kubectl  run  redis --image=redis --labels=front-end
 
 namespace:
 ================
+
 Get all the namespaces 
 =======================
 kubectl get namespaces 
 kubectl get namespaces --no-headers | wc -l
+
 checking Pod in specific namespace:
 ====================================
 kubectl get  pod --namespace=research
+
+
 Creat Pod in specific namespaces:
 ==================================
 kubectl  run  redis --image=redis --namespace=finance
 kubectl get pod --all-namespaces  | grep blue
 
+
 Checking services in namespaces:
 ===============================
 kubectl get service --namespace=marketing
 kubectl get service --namespace=dev
+
+
+Create deployment:
+=================
+kubectl create deployment httpd-frontend --image=httpd:2.4-alpine
+kubectl scale deployment --replicas=3 httpd-frontend
+kubectl get deployment 
+
+
