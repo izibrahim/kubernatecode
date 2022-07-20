@@ -1,0 +1,40 @@
+Checking the POD status:
+==========================
+
+kubectl  get  pod
+
+Creating the POD
+================
+
+kubectl  run nginx --image=nginx
+kub get pod
+
+Count the POD:
+===============
+
+kubectl get pod | wc -l
+
+Checking POD running in the cluster:
+====================================
+
+kubectl  get pod -o wide 
+
+Checking POD Image/State/Warning:
+=================================
+kubectl  describe pod | grep Image:
+kubectl  describe pod webapp | grep State:
+
+
+Delete POD:
+===========
+
+kubectl delete podd webapp
+
+Create POD using the POD definition file:
+==========================================
+
+kubectl run redis --image=redis1234 --dry-run=client yaml > pod.yml
+kubectl apply -f pod.yml 
+
+
+
