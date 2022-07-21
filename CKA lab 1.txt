@@ -1,0 +1,43 @@
+----- CKA ---- POD 
+
+Checking the POD status
+============================
+kubectl get pod
+
+Creating POD with image nginx
+================================
+kubectl run nginx --image=nginx
+
+Counting the POD
+=================
+Note: --no-headers remove the header & wc -l will count the lines
+
+kubectl get pod --no-headers | wc -l
+
+Checking the image in the POD:
+==============================
+
+kubectl describe pod | grep  Image:
+kubectl  describe pod webapp |  grep State:
+
+Checking the POD running on which Nodes:
+========================================
+
+kubectl  get pod -o wide  
+
+Delete the POD:
+===============
+
+kubectl delete pod webapp
+
+Create the POD using the definition file it will not create the POD but create the definition file:
+===================================================================================================
+
+kubectl run redis --image=redis123 --dry-run=client -o yaml > pod.yml
+- Create the POD now
+kubectl apply -f pod.yml 
+
+Change the Image of running POD:
+================================
+vi pod.yml 
+use vi and change the image
