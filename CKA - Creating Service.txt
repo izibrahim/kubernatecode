@@ -1,0 +1,88 @@
+Create a new service to access the web application using the service-definition-1.yaml file
+
+
+Name: webapp-service
+Type: NodePort
+targetPort: 8080
+port: 8080
+nodePort: 30080
+selector:
+  name: simple-webapp
+  
+  
+  
+  
+Check the service:
+=====================
+
+kubectl  get service
+kubectl  get svc
+
+Check the service detail:
+========================
+it will show endpoint/Target ports type of service
+kubectl describe  service
+
+
+Name:                     webapp-service
+Namespace:                default
+Labels:                   <none>
+Annotations:              <none>
+Selector:                 name=simple-webapp
+Type:                     NodePort
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       10.43.121.233
+IPs:                      10.43.121.233
+Port:                     <unset>  8080/TCP
+TargetPort:               8080/TCP
+NodePort:                 <unset>  30080/TCP
+Endpoints:                10.42.0.10:8080,10.42.0.11:8080,10.42.0.12:8080 + 1 more...
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   <none>
+
+
+UC1#
+
+Create a new service to access the web application using the service-definition-1.yaml file
+
+
+Name: webapp-service
+Type: NodePort
+targetPort: 8080
+port: 8080
+nodePort: 30080
+selector:
+  name: simple-webapp  
+  
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-service
+spec:
+  type: NodePort
+  ports:
+    - targetPort: 8080
+      port: 8080
+      nodePort: 30080
+  selector:
+    name: simple-webapp
+	
+kubectl  create -f pod_service.yml	
+
+another example:
+
+controlplane ~ ➜  more pod_serv2.yml 
+apiVersion: v1
+kind: Service
+metadata:
+    name: portnode
+spec:
+    type: NodePort
+    ports:
+     - targetPort: 80
+       port: 80 
+       nodePort: 30010 
+    selector:
+       name: test
