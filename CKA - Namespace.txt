@@ -1,0 +1,11 @@
+
+kubectl get namespaces 
+kubectl get namespaces --no-headers | wc -l
+kubectl get pod --namespace=research 
+kubectl  run redis --image=redis --namespace=finance
+kubectl describe pod
+kubectl describe namespaces 
+kubectl get pods --all-namespaces
+kubectl get pods --all-namespaces
+kubectl get namespaces 
+history 
