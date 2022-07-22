@@ -1,0 +1,79 @@
+UC1 1#
+Error int the below deployment
+=================================
+
+---
+apiVersion: apps/v1
+kind: deployment ----- Error
+metadata:
+  name: deployment-1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: busybox-pod
+  template:
+    metadata:
+      labels:
+        name: busybox-pod
+    spec:
+      containers:
+      - name: busybox-container
+        image: busybox888
+        command:
+        - sh
+        - "-c"
+        - echo Hello Kubernetes! && sleep 360
+		
+
+Fixing the error:
+==================
+
+controlplane ~ ➜  more deployment-definition-1.yaml 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: busybox-pod
+  template:
+    metadata:
+      labels:
+        name: busybox-pod
+    spec:
+      containers:
+      - name: busybox-container
+        image: busybox888
+        command:
+        - sh
+        - "-c"
+        - echo Hello Kubernetes! && sleep 3600
+
+Create the Deployment:
+========================
+
+kubectl create -f  deployment-definition-1.yaml
+
+Check the deployment status 
+============================
+
+kubectl get all
+
+kubectl  get deployments.apps 
+
+
+Create the Deployment using imperative commands:
+=================================================
+
+kubectl create deployment httpd-frontend --image=httpd:2.4-alpine
+
+
+Scale the deployment:
+=======================
+
+kubectl scale deployment httpd-frontend --replicas=3
+
