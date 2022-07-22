@@ -1,0 +1,17 @@
+ kubectl run nginx-pod --image=nginx:alpine
+ kubectl run redis --image=redis:alpine --labels="tier=db"
+ kubectl run redis123 --image=redis:alpine --labels="tier=db" -o yaml
+ clear
+ kubectl expose pod redis --port=6379 --name redis-service -o yaml
+ kubectl expose pod redis --port=6379 --name redis-service
+ clear
+ kubectl create deployment webapp --image=kodekloud/webapp-color --replicas=3 
+ kubectl run custom-nginx --image=nginx --port=8080
+ kubectl run custom-nginx123 --image=nginx123 --port=8080 -o yaml
+ clear
+ kubectl create  ns=dev-ns
+ kubectl create namespace dev-ns
+ kubectl create deployment redis-deploy --image=redis --namespace=dev-ns --replicas=2
+ kubectl run httpd --image=httpd:alpine --namespace=default 
+ kubectl expose pod httpd --port=80 --name httpd --dry-run=client -o yaml
+ kubectl expose pod httpd --port=80 --name httpd --type=ClusterIP
