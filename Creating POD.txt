@@ -37,4 +37,8 @@ kubectl run redis --image=redis1234 --dry-run=client yaml > pod.yml
 kubectl apply -f pod.yml 
 
 
+Checking POD in all namespace:
+==============================
 
+
+kubectl get pod -A
