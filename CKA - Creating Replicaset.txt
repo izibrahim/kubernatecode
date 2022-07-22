@@ -1,0 +1,164 @@
+Replicaset definition file: replicaset-definition-1.yml
+============================
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replicaset-1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+		
+		
+
+Check replicaset detail:
+=========================
+
+kubectl describe replicaset replicaset-definition-1
+
+Create the Replicaset:
+=======================
+
+kubectl create -f replicaset-definition-2.yaml
+
+Verify replicaset:
+====================
+
+kubectl get replicaset
+
+To check the POD in replicaset:
+===============================
+
+kubectl get pod 
+
+To check POD service/replicaset:
+=================================
+
+kubectl get all	
+		
+
+UC 1#
+-----
+		
+Find the error in the below replicaset:
+=======================================
+
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replicaset-1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      tier: frontend ------ Lable must match
+  template:
+    metadata:
+      labels:
+        tier: nginx ---- Lable must match
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+
+When we try to create the replicaset we will get the below error.
+
+kubectl create -f replicaset-definition-2.yaml 
+
+Error:
+
+Read the error spec.template.metadata.labels it clear mention that there is an issue with label line 57 and 61 label must match
+
+The ReplicaSet "replicaset-2" is invalid: spec.template.metadata.labels: Invalid value: map[string]string{"tier":"nginx"}: `selector` does not match template `labels`
+
+vi replicaset-definition-2.yaml and fix the label and create the POD.
+
+
+controlplane ~ ➜  kubectl create -f replicaset-definition-2.yaml 
+replicaset.apps/replicaset-2 created
+
+
+UC 2# 
+To fix the wrong image inside the running replicaset:
+======================================================
+
+use the below command and fix the image.
+
+kubectl edit replicasets.apps
+
+After fixing the image delete all the old pods:
+
+controlplane ~ ➜  kubectl  get  pod
+NAME                    READY   STATUS             RESTARTS   AGE
+new-replica-set-ffjlc   0/1     ImagePullBackOff   0          11m
+new-replica-set-d7f74   0/1     ImagePullBackOff   0          11m
+new-replica-set-47xd2   0/1     ImagePullBackOff   0          7m40s
+new-replica-set-jnrm4   0/1     ErrImagePull       0          11m
+
+controlplane ~ ➜  kubectl delete pod new-replica-set-ffjlc 
+pod "new-replica-set-ffjlc" deleted
+
+controlplane ~ ➜  kubectl delete pod new-replica-set-d7f74 
+pod "new-replica-set-d7f74" deleted
+
+controlplane ~ ➜  kubectl delete pod new-replica-set-47xd2 
+pod "new-replica-set-47xd2" deleted
+
+controlplane ~ ➜  kubectl delete pod new-replica-set-jnrm4 
+pod "new-replica-set-jnrm4" deleted
+
+
+Now new PODs created with correct image:
+
+controlplane ~ ➜  
+
+controlplane ~ ➜  
+
+controlplane ~ ➜  kubectl  get  pod
+NAME                    READY   STATUS    RESTARTS   AGE
+new-replica-set-qr9nr   1/1     Running   0          34s
+new-replica-set-vdj7p   1/1     Running   0          27s
+new-replica-set-694lt   1/1     Running   0          16s
+new-replica-set-nl6qr   1/1     Running   0          5s
+
+
+
+Scaling replicaset:
+==================
+
+kubectl scale replicaset  new-replica-set --replicas=5
+
+
+controlplane ~ ➜  kubectl get pod
+NAME                    READY   STATUS    RESTARTS   AGE
+new-replica-set-qr9nr   1/1     Running   0          94s
+new-replica-set-vdj7p   1/1     Running   0          87s
+new-replica-set-694lt   1/1     Running   0          76s
+new-replica-set-nl6qr   1/1     Running   0          65s
+new-replica-set-qzhg8   1/1     Running   0          5s
+
+Scaling down replicaset:
+=========================
+
+kubectl scale replicaset  new-replica-set --replicas=2
+replicaset.apps/new-replica-set scaled
+
+controlplane ~ ➜  kubectl get pod
+NAME                    READY   STATUS        RESTARTS   AGE
+new-replica-set-vdj7p   1/1     Running       0          99s
+new-replica-set-nl6qr   1/1     Running       0          77s
+new-replica-set-694lt   1/1     Terminating   0          88s
+new-replica-set-qr9nr   1/1     Terminating   0          106s
+new-replica-set-qzhg8   1/1     Terminating   0          17s
+
