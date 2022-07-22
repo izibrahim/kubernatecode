@@ -1,4 +1,5 @@
-
+below is the short command
+kubectl get ns 
 kubectl get namespaces 
 kubectl get namespaces --no-headers | wc -l
 kubectl get pod --namespace=research 
@@ -9,3 +10,5 @@ kubectl get pods --all-namespaces
 kubectl get pods --all-namespaces
 kubectl get namespaces 
 history 
+
+kubectl get pod -A
