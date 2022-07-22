@@ -35,7 +35,7 @@ Verify replicaset:
 ====================
 
 kubectl get replicaset
-
+kubectl get rs --------------Key command
 To check the POD in replicaset:
 ===============================
 
