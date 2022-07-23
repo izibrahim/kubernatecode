@@ -1,0 +1,43 @@
+controlplane ~ ✦ ✖ kubectl explain pod --recursive | grep resources -A3
+         resources      <Object>
+            limits      <map[string]string>
+            requests    <map[string]string>
+         securityContext        <Object>
+--
+         resources      <Object>
+            limits      <map[string]string>
+            requests    <map[string]string>
+         securityContext        <Object>
+--
+         resources      <Object>
+            limits      <map[string]string>
+            requests    <map[string]string>
+         securityContext        <Object>
+--
+                  resources     <Object>
+                     limits     <map[string]string>
+                     requests   <map[string]string>
+                  selector      <Object>
+
+controlplane ~ ✦ ➜  more pod.yml 
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    resources:
+            limits:
+               memory: 10Mi
+            requests: 
+               memory: 5Mi
+
+controlplane ~ ✦ ➜  kubectl create -f pod.yml 
+pod/nginx created
+
+controlplane ~ ✦ ➜  
