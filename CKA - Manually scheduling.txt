@@ -1,0 +1,59 @@
+UC1 # scheduling POD in specific Node
+===========================================
+
+Check the nodes first
+
+
+root@controlplane ~ ✖ kubectl get nodes 
+NAME           STATUS   ROLES                  AGE   VERSION
+controlplane   Ready    control-plane,master   21m   v1.23.0
+node01         Ready    <none>                 21m   v1.23.0
+
+
+Sch process is not running and it cannot sch the POD:
+
+
+root@controlplane ~ ➜  kubectl  get pod --namespace kube-system 
+NAME                                   READY   STATUS    RESTARTS   AGE
+coredns-64897985d-4mv2f                1/1     Running   0          22m
+coredns-64897985d-pws7c                1/1     Running   0          22m
+etcd-controlplane                      1/1     Running   0          23m
+kube-apiserver-controlplane            1/1     Running   0          23m
+kube-controller-manager-controlplane   1/1     Running   0          23m
+kube-flannel-ds-98mpz                  1/1     Running   0          22m
+kube-flannel-ds-dx924                  1/1     Running   0          22m
+kube-proxy-94n78                       1/1     Running   0          22m
+kube-proxy-s5hdt                       1/1     Running   0          22m
+
+
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  -  image: nginx
+     name: nginx
+
+We have created the POD now we will do the changes in the yaml and delete the pod and create the pod again. 
+
+root@controlplane ~ ➜  more nginx3.yaml 
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  -  image: nginx
+     name: nginx
+  nodeName: node01
+  
+now delete the pod kubectl delete pod or 
+below command will delete the POD and create again
+kubectl replace --force -f nginx3.yaml
+
+
+
