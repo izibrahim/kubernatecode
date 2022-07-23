@@ -1,0 +1,59 @@
+Checking the nodes status
+==========================
+
+kubectl  get node
+
+root@controlplane ~ ✖ kubectl  get node
+NAME           STATUS   ROLES                  AGE   VERSION
+controlplane   Ready    control-plane,master   20m   v1.23.0
+node01         Ready    <none>                 19m   v1.23.0
+
+
+
+Marking the Node01 taint:
+===========================
+
+kubectl  taint node node01 spray=mortein:NoSchudle
+
+Checking the taint status:
+===========================
+
+ kubectl describe nodes node01 | grep Taints:
+
+root@controlplane ~ ➜  kubectl describe nodes node01 | grep Taints:
+Taints:             spray=mortein:NoSchedule
+
+root@controlplane ~ ✖ kubectl describe node controlplane | grep Taints:
+
+
+Removing the taint from the controlplane node:
+==============================================
+
+kubectl taint nodes controlplane node-role.kubernetes.io/master:NoSchedule -
+
+
+Create the POD and toleration:
+===============================
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: bee
+  name: bee
+spec:
+  tolerations:
+  - key: "spray"
+    operator: "Equal"
+    value: "mortein"
+    effect: "NoSchedule"
+  containers:
+  - image: nginx
+    name: bee
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+I used kubectl explain pod --recursive | less to get the required config
