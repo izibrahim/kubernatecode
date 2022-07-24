@@ -1,0 +1,22 @@
+controlplane ~ ➜  kubectl create service nodeport webapp-service --node-port=30080 --tcp=8080:8080  --dry-run=client -o yaml > pod.yml
+
+controlplane ~ ➜  vi pod.yml 
+
+controlplane ~ ➜  kubectl apply -f pod.yml 
+service/webapp-service created
+
+controlplane ~ ➜   more pod.yml 
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: webapp-service
+  name: webapp-service
+spec:
+  ports:
+   - nodePort: 30080
+     port: 8080
+     targetPort: 8080
+  selector:
+    name: simple-webapp
+  type: NodePort
