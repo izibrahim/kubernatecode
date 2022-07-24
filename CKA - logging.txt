@@ -1,0 +1,74 @@
+
+Download the Metric from the git:
+======================================
+
+git clone https://github.com/kodekloudhub/kubernetes-metrics-server.git
+
+Run the kubectl to run the metric
+
+kubectl create -f kubernetes-metrics-server/
+
+
+root@controlplane ~ ➜  kubectl  top pod
+NAME       CPU(cores)   MEMORY(bytes)   
+elephant   20m          32Mi            
+lion       1m           18Mi            
+rabbit     135m         252Mi           
+
+root@controlplane ~ ➜  kubectl  top node 
+NAME           CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+controlplane   378m         1%     1221Mi          0%        
+node01         50m          0%     337Mi           0%        
+
+root@controlplane ~ ➜  kubectl  top node 
+NAME           CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+controlplane   371m         1%     1206Mi          0%        
+node01         50m          0%     337Mi           0%        
+
+root@controlplane ~ ➜  kubectl  top node 
+NAME           CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+controlplane   371m         1%     1206Mi          0%        
+node01         45m          0%     338Mi           0%        
+
+root@controlplane ~ ➜  kubectl  top node 
+NAME           CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+controlplane   371m         1%     1206Mi          0%        
+node01         45m          0%     338Mi           0%        
+
+root@controlplane ~ ➜  kubectl  top node 
+NAME           CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+controlplane   371m         1%     1206Mi          0%        
+node01         45m          0%     338Mi           0%        
+
+root@controlplane ~ ➜  kubectl  top node 
+NAME           CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+controlplane   367m         1%     1216Mi          0%        
+node01         60m          0%     338Mi           0%        
+
+root@controlplane ~ ➜  kubectl  top pod
+NAME       CPU(cores)   MEMORY(bytes)   
+elephant   21m          32Mi            
+lion       1m           18Mi            
+rabbit     124m         214Mi           
+
+root@controlplane ~ ➜  ^C
+
+root@controlplane ~ ✖ ^C
+
+root@controlplane ~ ✖ 
+
+
+
+oot@controlplane ~ ➜  kubectl get pod -n kube-system 
+NAME                                   READY   STATUS    RESTARTS   AGE
+coredns-64897985d-24s2c                1/1     Running   0          8m49s
+coredns-64897985d-d6zv9                1/1     Running   0          8m49s
+etcd-controlplane                      1/1     Running   0          8m58s
+kube-apiserver-controlplane            1/1     Running   0          8m58s
+kube-controller-manager-controlplane   1/1     Running   0          9m4s
+kube-flannel-ds-n7hmv                  1/1     Running   0          8m49s
+kube-flannel-ds-vpk22                  1/1     Running   0          8m9s
+kube-proxy-kvcqc                       1/1     Running   0          8m49s
+kube-proxy-z2jgt                       1/1     Running   0          8m9s
+kube-scheduler-controlplane            1/1     Running   0          9m3s
+metrics-server-74494c8bb7-lc9gs        1/1     Running   0          4m28s <-----------------------
