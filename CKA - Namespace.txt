@@ -12,3 +12,21 @@ kubectl get namespaces
 history 
 
 kubectl get pod -A
+
+
+Set the namespace from default to marketing:
+==============================================
+
+
+kubectl config set-context --current --namespace=marketing
+
+Unset the namespace from marketing to default: 
+==============================================
+
+kubectl config set-context --current --namespace=marketing
+
+
+Check all pods in Namespace:
+==============================
+
+kubectl  get pod --all-namespaces
