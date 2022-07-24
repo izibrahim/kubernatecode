@@ -1,0 +1,42 @@
+Create Daeomon using deployment:
+================================
+
+kubectl create deployment elasticsearch --image=k8s.gcr.io/fluentd-elasticsearch:1.20 --namespace=kube-system --dry-run=client -o yaml > pod1.yml
+
+vi pod1.yml
+
+
+apiVersion: apps/v1
+kind: DaemonSet ----- change the name / remove replicaset/ remove strategy save file and run kubectl apply -f pod1.yml
+metadata:
+  creationTimestamp: null
+  labels:
+    app: elasticsearch
+  name: elasticsearch
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+      - image: k8s.gcr.io/fluentd-elasticsearch:1.20
+        name: fluentd-elasticsearch
+
+~      
+
+Checking daemonsets
+=====================
+
+kubectl get daemonsets.apps -A
+
+Checking daemonsets Image
+============================
+
+
+kubectl describe daemonsets.apps -A | grep Image
