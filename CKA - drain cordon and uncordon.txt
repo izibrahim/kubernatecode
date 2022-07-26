@@ -1,0 +1,21 @@
+     Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason   Age   From     Message
+  ----    ------   ----  ----     -------
+  Normal  Pulling  53s   kubelet  Pulling image "kodekloud/webapp-delayed-start"
+  Normal  Pulled   44s   kubelet  Successfully pulled image "kodekloud/webapp-delayed-start" in 9.42551825s
+  Normal  Created  36s   kubelet  Created container hr-app
+  Normal  Started  35s   kubelet  Started container hr-app
+
+root@controlplane ~ ➜  kubectl cordon node01 
+node/node01 cordoned
+
+root@controlplane ~ ➜ 
