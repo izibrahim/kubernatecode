@@ -1,0 +1,57 @@
+1  alias k="kubectl"
+    2* k get deployments.app
+    3* 
+    4  k get pod -n kube-system 
+    5  k describe pod etcd-controlplane
+    6  k describe pod etcd-controlplane -n kube-system 
+    7  ls /var/lib/
+    8  ls /var/lib/kubelet/
+    9  more /var/lib/kubelet/config.yaml 
+   10  ls /etc/kubernetes/manifests
+   11  more /etc/kubernetes/manifests/ectd.yml
+   12  ls /etc/kubernetes/manifests/ectd.yml
+   13  cat /etc/kubernetes/manifests/etcd.yml
+   14  cd /etc/kubernetes/manifests
+   15  ls
+   16  more etcd.yaml 
+   17  ls /var/lib/etcd
+   18  cd
+   19  pwd
+   20  etcdctl snap
+   21  etcdctl snapshot
+   22  etcdctl snapshot 
+   23  export ETCDCTL_API=3
+   24  etcdctl snapshot
+   25  etcdctl snapshot save --endpoints=127.0.0.1:2379 --cert=/etc/kubernetes/pki/etcd/ca.crt \ 
+   26  etcdctl snapshot save --endpoints=127.0.0.1:2379 \--cert=/etc/kubernetes/pki/etcd/ca.crt  
+   27  etcdctl snapshot save --endpoints=127.0.0.1:2379 \ --cert=/etc/kubernetes/pki/etcd/ca.crt  
+   28  etcdctl snapshot save --endpoints=127.0.0.1:2379 ----cacert=/etc/kubernetes/pki/etcd/server.crt --cert=/etc/kubernetes/pki/etcd/ca.crt --key=/etc/kubernetes/pki/etcd/server.key /opt/snapshot-pre-boot.db
+   29  etcdctl snapshot save --endpoints=127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/server.crt --cert=/etc/kubernetes/pki/etcd/ca.crt --key=/etc/kubernetes/pki/etcd/server.key /opt/snapshot-pre-boot.db
+   30  etcdctl snapshot save --endpoints=127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/server.crt --cert=/etc/kubernetes/pki/etcd/ca.crt --key=/etc/kubernetes/pki/etcd/server.key /opt/snapshot-pre-boot.db
+   31  etcdctl snapshot save --endpoints=127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt 
+   32  --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key /opt/snapshot-pre-boot.db
+   33  etcdctl snapshot save --endpoints=127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key /opt/snapshot-pre-boot.db
+   34  clear
+   35  k get deployments.apps 
+   36  history 
+   37  etcdctl snapshot restore
+   38  etcdctl snapshot restore --data-dir /var/lib/etcdctl-from-backup /opt/snapshot-pre-boot.db 
+   39  ls /var/lib/etcdctl-from-backup/
+   40  history 
+   41  vi /etc/kubernetes/manifests/etcd.yml
+   42  cd /etc/kubernetes/manifests
+   43  ls
+   44  rm etcd.yml
+   45  vi etcd.yaml 
+   46  cd
+   47  k get pod -A
+   48  k get pod -n kube-system 
+   49  vi etcd.yaml 
+   50  k get pod -n kube-system 
+   51  k get pod -n kube-system --watch
+   52  k delete pod etcd-controlplane -n kube-system 
+   53  k get pod -n kube-system --watch
+   54  k get deployments.apps 
+   55  history 
+
+root@controlplane ~ ➜  
