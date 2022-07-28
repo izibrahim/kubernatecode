@@ -1,0 +1,59 @@
+Create the alias:
+====================
+alias k="kubectl"
+
+Check the node of nodes:
+=============================
+k get node
+
+Checking the PODs:
+====================
+
+k get pod
+k get pod -A
+ 
+Checking the deployements:
+=========================
+ 
+k get deployments.apps 
+
+Checking the PODs running on the Cluster:
+=========================================
+ 
+k get pod -o wide
+ 
+Move all the pods from the Node01:
+==================================
+k drain node01 
+k drain node01  --ignore-daemonsets 
+
+Checking the POD status after moving the PODs
+============================================== 
+
+k get nodes 
+k get pod -o wide 
+
+
+The maintenance tasks have been completed. Configure the node node01 to be schedulable again.
+=================================================================================================
+
+k uncordon node01 
+
+If the POD is created without deployments and replciaset then if u do the k drain node01  --ignore-daemonsets  it will failed
+becuase there is POD is manully created if your forced full remove it, it will be delete and not created on another of the 
+Nodes use the below command to remove it premanently
+
+kubectl drain node01 --ignore-daemonsets --force
+
+if you want Node01 dont schedule any of the new PODs us the below command
+
+k uncordon node01
+
+
+
+
+
+
+
+
+
