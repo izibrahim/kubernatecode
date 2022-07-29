@@ -1,0 +1,80 @@
+Create presistent volume:
+==========================
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-log
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+      path: /pv/log
+	  
+
+create the claim:
+====================
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: claim-log-1
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Mi
+	  
+	  
+Create the pod call the claim:
+==============================
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: event-simulator
+  name: event-simulator
+spec:
+  containers:
+  - image: kodekloud/event-simulator
+    name: event-simulator
+    volumeMounts:
+    - mountPath: /log
+      name: webapp
+  volumes:
+    - name: webapp
+      persistentVolumeClaim:
+        claimName: claim-log-1
+
+use full commands:
+=====================
+
+k create -f pv.yaml 
+k create -f pv.yaml 
+k create -f pv.yaml 
+k create -f claimVol.yaml 
+k create -f pod.yml 
+k create -f pod.yml 
+k create -f pod.yml 
+k create -f pod.yml 
+k create -f pod.yml 
+k create -f claim.yml 
+k create -f claimVol.yaml 
+k create -f pv.yaml 
+k create -f pv.yaml 
+history | grep create
+
+root@controlplane /pv/log ✖ k get pv
+NAME     CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                 STORAGECLASS   REASON   AGE
+pv-log   100Mi      RWX            Retain           Bound    default/claim-log-1                           79s
+
+root@controlplane /pv/log ➜  k get pvc
+NAME          STATUS   VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+claim-log-1   Bound    pv-log   100Mi      RWX                           3m5s
+		
