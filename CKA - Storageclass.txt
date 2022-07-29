@@ -1,0 +1,107 @@
+Storage Class Lab:
+=====================
+
+Checking storage classes:
+=========================
+
+ k get storageclasses.storage.k8s.io 
+NAME                   PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+local-path (default)   rancher.io/local-path   Delete          WaitForFirstConsumer   false                  5m4s
+
+controlplane ~ ➜  
+
+
+
+controlplane ~ ➜  more pod.yml 
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx:alpine
+    name: nginx
+    resources: {}
+    volumeMounts:
+    - mountPath: "/var/www/html"
+      name: local-pvc
+  volumes:
+  - name: local-pvc
+    persistentVolumeClaim:
+        claimName: local-pvc
+
+controlplane ~ ➜  more storageclass.yml 
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: delayed-volume-sc
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+
+controlplane ~ ➜  ls
+claim.yml         pod.yml           storageclass.yml
+
+controlplane ~ ➜  more claim.yml 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: local-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+  storageClassName: local-storage
+
+controlplane ~ ➜  k get pv
+NAME       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM               STORAGECLASS    REASON   AGE
+local-pv   500Mi      RWO            Retain           Bound    default/local-pvc   local-storage            20m
+
+controlplane ~ ➜  k describe pv local-pv -
+Name:              local-pv
+Labels:            <none>
+Annotations:       pv.kubernetes.io/bound-by-controller: yes
+Finalizers:        [kubernetes.io/pv-protection]
+StorageClass:      local-storage
+Status:            Bound
+Claim:             default/local-pvc
+Reclaim Policy:    Retain
+Access Modes:      RWO
+VolumeMode:        Filesystem
+Capacity:          500Mi
+Node Affinity:     
+  Required Terms:  
+    Term 0:        kubernetes.io/hostname in [controlplane]
+Message:           
+Source:
+    Type:  LocalVolume (a persistent volume backed by local storage on a node)
+    Path:  /opt/vol1
+Events:    <none>
+Error from server (NotFound): persistentvolumes "-" not found
+
+controlplane ~ ✖ k describe pv local-pv 
+Name:              local-pv
+Labels:            <none>
+Annotations:       pv.kubernetes.io/bound-by-controller: yes
+Finalizers:        [kubernetes.io/pv-protection]
+StorageClass:      local-storage
+Status:            Bound
+Claim:             default/local-pvc
+Reclaim Policy:    Retain
+Access Modes:      RWO
+VolumeMode:        Filesystem
+Capacity:          500Mi
+Node Affinity:     
+  Required Terms:  
+    Term 0:        kubernetes.io/hostname in [controlplane]
+Message:           
+Source:
+    Type:  LocalVolume (a persistent volume backed by local storage on a node)
+    Path:  /opt/vol1
+Events:    <none>
+
+controlplane ~ ➜  ^C
