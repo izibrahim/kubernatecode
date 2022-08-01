@@ -1,3 +1,23 @@
+Before doing any thing related to --selector  run the below command
+
+k get pod --show-labels
+
+controlplane ~ ✦ ➜  k get pod --show-labels 
+NAME                 READY   STATUS    RESTARTS   AGE    LABELS
+db-1-qf26r           1/1     Running   0          31m    env=dev,tier=db
+app-1-zzxdf          1/1     Running   0          31m    bu=finance,env=prod,tier=frontend
+app-2-4ng8r          1/1     Running   0          31m    env=prod,tier=frontend
+db-1-kpq65           1/1     Running   0          31m    env=dev,tier=db
+app-1-db4lg          1/1     Running   0          31m    bu=finance,env=dev,tier=frontend
+auth                 1/1     Running   0          31m    bu=finance,env=prod
+db-2-kjlwx           1/1     Running   0          31m    bu=finance,env=prod,tier=db
+app-1-j22v9          1/1     Running   0          31m    bu=finance,env=dev,tier=frontend
+db-1-2lphq           1/1     Running   0          31m    env=dev,tier=db
+app-1-cjts8          1/1     Running   0          31m    bu=finance,env=dev,tier=frontend
+db-1-tf7hk           1/1     Running   0          31m    env=dev,tier=db
+replicaset-1-qjgws   1/1     Running   0          110s   tier=nginx
+replicaset-1-59qph   1/1     Running   0          110s   tier=nginx
+
 kubectl get  pod --selector=env --no-headers | wc -l
 kubectl get  pod --selector=dev --no-headers | wc -l
 kubectl get  pod --selector=env=dev --no-headers | wc -l
