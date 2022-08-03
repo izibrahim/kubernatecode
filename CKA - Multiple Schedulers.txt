@@ -1,0 +1,115 @@
+
+root@controlplane ~ ➜  #What is the name of the POD that deploys the default kubernetes scheduler in this environment?
+
+root@controlplane ~ ➜  alias k=kubectl
+
+root@controlplane ~ ➜  k get pod -A
+NAMESPACE     NAME                                   READY   STATUS    RESTARTS   AGE
+kube-system   coredns-64897985d-c6mrc                1/1     Running   0          7m48s
+kube-system   coredns-64897985d-mm6rs                1/1     Running   0          7m47s
+kube-system   etcd-controlplane                      1/1     Running   0          7m56s
+kube-system   kube-apiserver-controlplane            1/1     Running   0          8m3s
+kube-system   kube-controller-manager-controlplane   1/1     Running   0          8m2s
+kube-system   kube-flannel-ds-j9c98                  1/1     Running   0          7m48s
+kube-system   kube-proxy-7lv59                       1/1     Running   0          7m48s
+kube-system   kube-scheduler-controlplane            1/1     Running   0          8m2s
+
+root@controlplane ~ ➜  
+
+root@controlplane ~ ➜  #What is the image used to deploy the kubernetes scheduler?
+
+root@controlplane ~ ➜  k get pod -A
+NAMESPACE     NAME                                   READY   STATUS    RESTARTS   AGE
+kube-system   coredns-64897985d-c6mrc                1/1     Running   0          8m27s
+kube-system   coredns-64897985d-mm6rs                1/1     Running   0          8m26s
+kube-system   etcd-controlplane                      1/1     Running   0          8m35s
+kube-system   kube-apiserver-controlplane            1/1     Running   0          8m42s
+kube-system   kube-controller-manager-controlplane   1/1     Running   0          8m41s
+kube-system   kube-flannel-ds-j9c98                  1/1     Running   0          8m27s
+kube-system   kube-proxy-7lv59                       1/1     Running   0          8m27s
+kube-system   kube-scheduler-controlplane            1/1     Running   0          8m41s
+
+root@controlplane ~ ✖ k describe pod --namespace kube-system kube-scheduler-controlplane | grep Image:
+    Image:         k8s.gcr.io/kube-scheduler:v1.23.0
+
+root@controlplane ~ ➜  
+
+Let's create a configmap that the new scheduler will employ using the concept of ConfigMap as a volume.
+Create a configmap with name my-scheduler-config using the content of file /root/my-scheduler-config.yaml
+
+root@controlplane ~ ➜  k create configmap my-scheduler-config --from-file=my-scheduler-config.yaml --namespace kube-system 
+configmap/my-scheduler-config created
+
+root@controlplane ~ ➜  
+
+
+root@controlplane ~ ➜  more my-scheduler-config.yaml 
+apiVersion: kubescheduler.config.k8s.io/v1beta2
+kind: KubeSchedulerConfiguration
+profiles:
+  - schedulerName: my-scheduler
+leaderElection:
+  leaderElect: false
+
+root@controlplane ~ ➜  ^C
+
+
+
+
+root@controlplane ~ ➜  more my-scheduler.yaml 
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: my-scheduler
+  name: my-scheduler
+  namespace: kube-system
+spec:
+  serviceAccountName: my-scheduler
+  containers:
+  - command:
+    - /usr/local/bin/kube-scheduler
+    - --config=/etc/kubernetes/my-scheduler/my-scheduler-config.yaml
+    image: k8s.gcr.io/kube-scheduler:v1.23.0
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 10259
+        scheme: HTTPS
+      initialDelaySeconds: 15
+    name: kube-second-scheduler
+    readinessProbe:
+      httpGet:
+        path: /healthz
+        port: 10259
+        scheme: HTTPS
+    resources:
+      requests:
+        cpu: '0.1'
+    securityContext:
+      privileged: false
+    volumeMounts:
+      - name: config-volume
+        mountPath: /etc/kubernetes/my-scheduler
+  hostNetwork: false
+  hostPID: false
+  volumes:
+    - name: config-volume
+      configMap:
+        name: my-scheduler-config
+
+
+
+
+POD with Manual schudeler
+
+root@controlplane ~ ➜  more nginx-pod.yaml 
+apiVersion: v1 
+kind: Pod 
+metadata:
+  name: nginx 
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+  schedulerName: my-scheduler
