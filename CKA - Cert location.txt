@@ -1,0 +1,152 @@
+Kubapi server
+===============
+
+All certificates are under : ls /etc/kubernetes/pki 
+ls /etc/kubernetes/manifests/
+more /var/lib/kubelet/config.yaml
+
+Below is the  kube api server 
+spec:
+  containers:
+  - command:
+    - kube-apiserver
+    - --advertise-address=10.32.207.3
+    - --allow-privileged=true
+    - --authorization-mode=Node,RBAC
+    - --client-ca-file=/etc/kubernetes/pki/ca.crt
+    - --enable-admission-plugins=NodeRestriction
+    - --enable-bootstrap-token-auth=true
+    - --etcd-cafile=/etc/kubernetes/pki/etcd/ca.crt
+    - --etcd-certfile=/etc/kubernetes/pki/apiserver-etcd-client.crt
+    - --etcd-keyfile=/etc/kubernetes/pki/apiserver-etcd-client.key
+    - --etcd-servers=https://127.0.0.1:2379
+    - --insecure-port=0
+    - --kubelet-client-certificate=/etc/kubernetes/pki/apiserver-kubelet-client.crt
+    - --kubelet-client-key=/etc/kubernetes/pki/apiserver-kubelet-client.key
+    - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+    - --proxy-client-cert-file=/etc/kubernetes/pki/front-proxy-client.crt
+    - --proxy-client-key-file=/etc/kubernetes/pki/front-proxy-client.key
+    - --requestheader-allowed-names=front-proxy-client
+    - --requestheader-client-ca-file=/etc/kubernetes/pki/front-proxy-ca.crt
+    - --requestheader-extra-headers-prefix=X-Remote-Extra-
+    - --requestheader-group-headers=X-Remote-Group
+    - --requestheader-username-headers=X-Remote-User
+    - --secure-port=6443
+    - --service-account-issuer=https://kubernetes.default.svc.cluster.local
+    - --service-account-key-file=/etc/kubernetes/pki/sa.pub
+    - --service-account-signing-key-file=/etc/kubernetes/pki/sa.key
+    - --service-cluster-ip-range=10.96.0.0/12
+    - --tls-cert-file=/etc/kubernetes/pki/apiserver.crt
+    - --tls-private-key-file=/etc/kubernetes/pki/apiserver.key   ---------------->>>> kubapi server certificiate
+	
+	
+	
+etcd:
+======
+
+root@controlplane ~ ➜  ls /etc/kubernetes/pki/etcd/
+ca.crt  healthcheck-client.crt  peer.crt  server.crt
+ca.key  healthcheck-client.key  peer.key  server.key
+
+root@controlplane ~ ➜  
+
+spec:
+  containers:
+  - command:
+    - etcd
+    - --advertise-client-urls=https://10.32.207.3:2379
+    - --cert-file=/etc/kubernetes/pki/etcd/server.crt
+    - --client-cert-auth=true
+    - --data-dir=/var/lib/etcd
+    - --initial-advertise-peer-urls=https://10.32.207.3:2380
+    - --initial-cluster=controlplane=https://10.32.207.3:2380
+    - --key-file=/etc/kubernetes/pki/etcd/server.key
+    - --listen-client-urls=https://127.0.0.1:2379,https://10.32.207.3:2379
+    - --listen-metrics-urls=http://127.0.0.1:2381
+    - --listen-peer-urls=https://10.32.207.3:2380
+    - --name=controlplane
+    - --peer-cert-file=/etc/kubernetes/pki/etcd/peer.crt
+    - --peer-client-cert-auth=true
+    - --peer-key-file=/etc/kubernetes/pki/etcd/peer.key
+    - --peer-trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt
+    - --snapshot-count=10000
+    - --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt
+
+
+root@controlplane ~ ➜  # this is the file - --tls-cert-file=/etc/kubernetes/pki/apiserver.crt
+
+root@controlplane ~ ➜  #Identify the certificate file used for the kube-api server
+
+root@controlplane ~ ➜  # this is the file - --tls-cert-file=/etc/kubernetes/pki/apiserver.crt
+
+root@controlplane ~ ➜  more /etc/kubernetes/manifests/kube-apiserver.yaml | grep .crt
+    - --client-ca-file=/etc/kubernetes/pki/ca.crt
+    - --etcd-cafile=/etc/kubernetes/pki/etcd/ca.crt
+    - --etcd-certfile=/etc/kubernetes/pki/apiserver-etcd-client.crt
+    - --kubelet-client-certificate=/etc/kubernetes/pki/apiserver-kubelet-client.crt
+    - --proxy-client-cert-file=/etc/kubernetes/pki/front-proxy-client.crt
+    - --requestheader-client-ca-file=/etc/kubernetes/pki/front-proxy-ca.crt
+    - --tls-cert-file=/etc/kubernetes/pki/apiserver.crt
+
+root@controlplane ~ ➜  
+
+
+root@controlplane ~ ➜  #Identify the Certificate file used to authenticate kube-apiserver as a client to ETCD Server
+
+root@controlplane ~ ➜  more /etc/kubernetes/manifests/kube-apiserver.yaml | grep etcd    - --etcd-cafile=/etc/kubernetes/pki/etcd/ca.crt
+    - --etcd-certfile=/etc/kubernetes/pki/apiserver-etcd-client.crt
+    - --etcd-keyfile=/etc/kubernetes/pki/apiserver-etcd-client.key
+    - --etcd-servers=https://127.0.0.1:2379
+
+root@controlplane ~ ➜  # This is the file - --etcd-certfile=/etc/kubernetes/pki/apiserver-etcd-client.crt
+
+
+openssl x509 -in /etc/kubernetes/pki/etcd/server.crt -text -noout
+
+
+Problem:
+=========
+Kubectl suddenly stops responding to your commands. Check it out! Someone recently modified the /etc/kubernetes/manifests/etcd.yaml file
+You are asked to investigate and fix the issue. Once you fix the issue wait for sometime for kubectl to respond. Check the logs of the ETCD container.
+
+
+The kube-api server stopped again! Check it out. Inspect the kube-api server logs and identify the root cause and fix the issue.
+
+Run docker ps -a command to identify the kube-api server container. Run docker logs container-id command to view the logs.
+
+
+
+
+Remember the path
+
+root@controlplane ~ ➜  more /etc/kubernetes/manifests/kube-apiserver.yaml | grep ".crt"
+    - --client-ca-file=/etc/kubernetes/pki/ca.crt
+    - --etcd-cafile=/etc/kubernetes/pki/etcd/ca.crt
+    - --etcd-certfile=/etc/kubernetes/pki/apiserver-etcd-client.crt
+    - --kubelet-client-certificate=/etc/kubernetes/pki/apiserver-kubelet-client.crt
+    - --proxy-client-cert-file=/etc/kubernetes/pki/front-proxy-client.crt
+    - --requestheader-client-ca-file=/etc/kubernetes/pki/front-proxy-ca.crt
+    - --tls-cert-file=/etc/kubernetes/pki/apiserver.crt
+
+root@controlplane ~ ➜  more /etc/kubernetes/manifests/kube-apiserver.yaml | grep ".key"
+    - --etcd-keyfile=/etc/kubernetes/pki/apiserver-etcd-client.key
+    - --kubelet-client-key=/etc/kubernetes/pki/apiserver-kubelet-client.key
+    - --proxy-client-key-file=/etc/kubernetes/pki/front-proxy-client.key
+    - --service-account-key-file=/etc/kubernetes/pki/sa.pub
+    - --service-account-signing-key-file=/etc/kubernetes/pki/sa.key
+    - --tls-private-key-file=/etc/kubernetes/pki/apiserver.key
+
+
+root@controlplane ~ ✦ ✖ more /etc/kubernetes/manifests/etcd.yaml | grep .cert
+    - --cert-file=/etc/kubernetes/pki/etcd/server.crt
+    - --client-cert-auth=true
+    - --peer-cert-file=/etc/kubernetes/pki/etcd/peer.crt
+    - --peer-client-cert-auth=true
+      name: etcd-certs
+    name: etcd-certs
+
+root@controlplane ~ ✦ ➜  more /etc/kubernetes/manifests/etcd.yaml | grep .key
+    - --key-file=/etc/kubernetes/pki/etcd/server.key
+    - --peer-key-file=/etc/kubernetes/pki/etcd/peer.key
+
+root@controlplane ~ ✦ ➜ 
