@@ -1,0 +1,75 @@
+Linux basic command:
+
+Checking interface details
+===========================
+ip link
+
+assigning ip address
+======================
+
+ip addr add 192.168.1.10/24 dev eth0
+
+add route in linux host
+========================
+
+ip route add 192.168.2.0/24 via 192.168.1.1
+
+Checking route table
+====================
+
+route
+
+Default route 
+==============
+
+ip route add default via 192.168.2.1
+
+
+ip addr
+ip link
+ip route
+route
+nslookup www.google.com
+dig www.google.com
+
+
+cat /proc/sys/net/ipv4/ip_forward --change to 1 to allow linux host as transit 
+
+DNS
+===
+ping 192.18.1.11
+
+how to ping db
+
+cat >> /etc/hosts
+192.168.1.11 db
+192.168.1.11 www.google.com
+
+now ping will work
+
+if the number of host increase setup the DNS server go to the host file cat /etc/resolv.conf 
+===================================================
+
+cat /etc/resolv.conf 
+nameserver 192.168.1.100 -- this is DNS server name
+
+
+check the hostname
+====================
+
+hostname
+
+Checking the node and controle plane IP address in kubernetes
+=============================================================
+k get nodes  -o wide
+
+ifconfig -a
+
+Get the mac address of Node01
+====================================
+arp node01
+ip link 
+
+check the port listening
+===========================
+cat /etc/kubernetes/manifests/kube-scheduler.yaml 
