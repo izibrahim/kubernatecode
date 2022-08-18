@@ -1,0 +1,38 @@
+Notice that ETCD is listening on two ports. Which of these have more client connections established?
+
+
+root@controlplane ~ ➜  1netstat -anp | grep etcd | grep 2379 | wc -l 
+-su: 1netstat: command not found
+0
+
+root@controlplane ~ ➜  netstat -anp | grep etcd | grep 2379 | wc -l 
+70
+
+Correct! That's because 2379 is the port of ETCD to which all control plane components connect to. 2380 is only for etcd peer-to-peer connectivity. When you have multiple controlplane nodes. In this case we don't.
+
+k get nodes
+k get node -o wide
+ifconfig
+k get node -o wide
+sh arp | grep Node01
+sh arp | grep node01
+arp
+arp  node01
+
+clear
+ifconfig
+ip link
+ip route
+ls /etc/kubernetes/manifests/kube-apiserver.yaml 
+cat /etc/kubernetes/manifests/kube-apiserver.yaml 
+cat /etc/kubernetes/manifests/kube-scheduler.yaml 
+ps aux | grep etcd
+netstat -anp | grep etcd
+netstat -anp | grep etcd | grep 2380 | wc -l 
+1netstat -anp | grep etcd | grep 2379 | wc -l 
+netstat -anp | grep etcd | grep 2379 | wc -l 
+
+
+NS lookup
+
+k exec -it hr -- nslookup  mysql.payroll > /root/CKA/nslookup.out
