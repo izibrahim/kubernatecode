@@ -77,3 +77,7 @@ Scale the deployment:
 
 kubectl scale deployment httpd-frontend --replicas=3
 
+rollback to specific version
+===========================
+
+k rollout undo deployment --to-revision 1
